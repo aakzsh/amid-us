@@ -516,13 +516,12 @@ fieldset[disabled] .s-btn {
 }
 /* Form Input v5 */
 .s-form-v5__input {
-  height: 3.375rem;
+  height: 2.95rem;
   color: #656565;
   font-size: 0.875rem;
   font-weight: 300;
   background: transparent;
-  border-color: #424242;
-  border-right: none;
+  border: 0.0625rem solid #424242;
   box-shadow: none;
   letter-spacing: .1rem;
   text-transform: uppercase;

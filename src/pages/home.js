@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+const whatsapp = require('whatsapp-chat-parser');
 
 const Home = () => {
+
+    const [messages, setMessages] = useState([]);
+
+    const showFile = async (e) => {
+        e.preventDefault()
+        const reader = new FileReader()
+        reader.onload = async (e) => {
+            let text = (e.target.result);
+            whatsapp
+                .parseString(text)
+                .then(messages => {
+                    // Do whatever you want with messages
+                    console.log(messages);
+                    setMessages(messages);
+                })
+                .catch(err => {
+                    // Something went wrong
+                    console.error(err);
+                });
+        };
+        reader.readAsText(e.target.files[0]);
+    }
 
     return (<div>
         <div class="s-promo-block-v4 g-fullheight--xs g-bg-position--center swiper-slide home">
@@ -34,12 +57,29 @@ const Home = () => {
             <div class="row">
                 <div class="col-md-7">
                     <h2 class="g-font-size-32--xs g-font-size-36--md g-font-weight--600 g-color--dark">Get Started</h2>
-                    <p class="g-font-size-16--xs g-color--dark g-margin-b-60--xs">Upload your chats and we'll show relevant insights for it!</p>
-                    <a href="/jobs"
-                        class="text-uppercase s-btn s-btn--sm s-btn--primary-bg g-padding-x-30--xs">Upload</a>
+                    <p class="g-font-size-16--xs g-color--dark g-margin-b-30--xs">Upload your chats and we'll show relevant insights for it!</p>
+                    <label itemID="chatFile">WhatsApp Chat File *</label>
+                    <input className="s-form-v5__input input" type="file" name="Chat File" id="chatFile"
+                        placeholder="Select Chat File"
+                        onChange={async (e) => {
+                            await showFile(e);
+                        }} />
+                    <button type="submit"
+                        class="g-margin-t-30--xs text-uppercase s-btn s-btn--sm s-btn--primary-bg g-padding-x-30--xs">Analyze</button>
                 </div>
                 <div className="col-md-5">
-                    <div><img src="./img/inbox.png" alt="inbox" width="400" /></div>
+
+                    {messages && messages.length > 0 ?
+                        <div style={{ "overflow": "auto" }} class="g-bg-color--sky-light g-height-350--xs g-padding-y-10--xs g-padding-x-10--xs">
+                            {messages.map(message => {
+                                return (<div> <div style={{ "width": "max-content" }} class="g-bg-color--primary-ltr g-padding-y-5--xs g-padding-x-25--xs g-radius--50 g-margin-b-10--xs">
+                                    <div class="g-font-size-11--xs g-font-weight-700 text-uppercase g-color--primary">{message?.author}<span class="g-color-dark g-margin-l-5--xs">{message?.date.toLocaleTimeString()}</span></div>
+                                    <div style={{ "max-width": "370px" }} class="g-font-size-12--xs g-line-height--xs g-color--dark">{message?.message}</div>
+                                </div></div>)
+                            })}
+
+                        </div>
+                        : <div><img src="./img/inbox.png" alt="inbox" width="400" /></div>}
                 </div>
             </div>
         </div>
