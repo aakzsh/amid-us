@@ -19,7 +19,7 @@ import {
   getKeyElements,
   getSentimentAnalysis,
   getHateSpeechAnalysis,
-  getBehaviouralEmotionalAnalysis,
+  getBehaviouralAnalysis,
 } from "../utils/api";
 
 const whatsapp = require("whatsapp-chat-parser");
@@ -27,7 +27,7 @@ const whatsapp = require("whatsapp-chat-parser");
 const Result = () => {
   ChartJS.register(ArcElement, Tooltip, Legend);
 
-  const chartdata = {
+  const tempcd = {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
     datasets: [
       {
@@ -70,6 +70,7 @@ const Result = () => {
 
   let text = localStorage.getItem("chat");
   const [messages, setMessages] = useState([]);
+  const [topicsArr, setTopicsArr] = useState([]);
   const [messageCount, setMessageCount] = useState(0);
   const [wordCount, setWordCount] = useState(0);
   const [data, setData] = useState([]);
@@ -77,7 +78,11 @@ const Result = () => {
   const [wpm, setwpm] = useState(0);
   const [hs, seths] = useState(0);
   const [rawText, setRawText] = useState("");
+  const [sentimentNeg, setSentimentNeg] = useState(0);
+  const [sentimentPos, setSentimentPos] = useState(0);
+  const [sentimentOverall, setSentimentOverall] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [chartData, setChartData] = useState(tempcd);
 
   const findMostFrequent = (str) => {
     var num = 10;
@@ -139,20 +144,97 @@ const Result = () => {
 
   useEffect(() => {
     if (rawText != "") {
-      // getKeyElements(rawText).then((value)=>{
-      //     console.log(value)
-      //   })
-      getHateSpeechAnalysis(rawText).then((value) => {
-        console.log(value);
-        let hsTags = value.categories;
-        let score = 0;
-        // let count = 0;
-        for (let index = 0; index < hsTags.length; index++) {
-          score += hsTags[index].score;
+      // getKeyElements(rawText).then((value) => {
+      //   const topics = value.topics;
+
+      //   let tempTopics = [];
+      //   let len = topics.length > 3 ? 3 : topics.length;
+      //   for (let i = 0; i < len; i++) {
+      //     tempTopics.push(topics[i].label);
+      //   }
+
+      //   console.log(tempTopics)
+      //   setTopicsArr(tempTopics);
+      // });
+      // getHateSpeechAnalysis(rawText).then((value) => {
+      //   console.log(value);
+      //   let hsTags = value.categories;
+      //   let score = 0;
+      //   // let count = 0;
+      //   for (let index = 0; index < hsTags.length; index++) {
+      //     score += hsTags[index].score;
+      //   }
+
+      //   console.log(score, hsTags);
+      //   seths(Math.round(score / hsTags.length));
+      // });
+
+      // getSentimentAnalysis(rawText).then(value => {
+      //   setSentimentNeg(value.negativity)
+      //   setSentimentPos(value.positivity)
+      //   setSentimentOverall(value.overall)
+      // })
+
+      // const chartdata = {
+      //   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      //   datasets: [
+      //     {
+      //       label: "# of Votes",
+      //       data: [12, 19, 3, 5, 2, 3],
+      //       backgroundColor: [
+      //         "rgba(255, 99, 132, 0.2)",
+      //         "rgba(54, 162, 235, 0.2)",
+      //         "rgba(255, 206, 86, 0.2)",
+      //         "rgba(75, 192, 192, 0.2)",
+      //         "rgba(153, 102, 255, 0.2)",
+      //         "rgba(255, 159, 64, 0.2)",
+      //       ],
+      //       borderColor: [
+      //         "rgba(255, 99, 132, 1)",
+      //         "rgba(54, 162, 235, 1)",
+      //         "rgba(255, 206, 86, 1)",
+      //         "rgba(75, 192, 192, 1)",
+      //         "rgba(153, 102, 255, 1)",
+      //         "rgba(255, 159, 64, 1)",
+      //       ],
+      //       borderWidth: 1,
+      //     },
+      //   ],
+      // };
+
+      getBehaviouralAnalysis(rawText).then((value) => {
+        // console.log(value)
+        let tempLabels = [];
+        let tempData = [];
+
+        const data = value.categories;
+        for (let i = 0; i < data.length; i++) {
+          tempLabels.push(data[i].label);
+          tempData.push(data[i].score);
         }
 
-        console.log(score, hsTags);
-        seths(Math.round(score / hsTags.length));
+        const cd = {
+          labels: tempLabels,
+          dataset: [
+            {
+              data: tempData,
+              label: "# of Votes",
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        }
+
+        setChartData(cd);
       });
     }
   }, [rawText]);
@@ -245,24 +327,44 @@ const Result = () => {
               <p className="subheading">Most Talked Topics</p>
               <div className="icon-content">
                 <img src={trends} alt="" className="most-child-icon" />
-                <h4>
-                  <b>{"7:00 - 8:00"}</b>
-                </h4>
+                <div className="" style={{ padding: "0px" }}>
+                  {topicsArr
+                    ? topicsArr.map((item) => {
+                        return (
+                          <>
+                            <h4 style={{ padding: "0px" }}>
+                              <b>{item}</b>
+                            </h4>
+                          </>
+                        );
+                      })
+                    : ""}
+                </div>
               </div>
             </div>
           </div>
 
           <div className="sentiment">
             <p className="subheading">Sentiment Analysis</p>
-            <SentimentMeter score={40} positive={40} negative={30} />
+            <SentimentMeter
+              score={sentimentOverall}
+              positive={sentimentPos}
+              negative={sentimentNeg}
+            />
 
             <div className="sentiment-score">
               <h3>
                 <b>Overall Sentiment Score:</b>
               </h3>
-              <h1>
-                <b>+10</b>
-              </h1>
+              {sentimentOverall > 0 ? (
+                <h1 style={{ color: "#3B951B" }}>
+                  <b>{sentimentOverall}</b>
+                </h1>
+              ) : (
+                <h1 style={{ color: "#863333" }}>
+                  <b>{sentimentOverall}</b>
+                </h1>
+              )}
             </div>
 
             <div className="sentiments">
@@ -270,13 +372,13 @@ const Result = () => {
                 <h3>
                   <b>Emotional Analysis</b>
                 </h3>
-                <Doughnut data={chartdata} />
+                <Doughnut data={chartData} />
               </div>
               <div className="chart-parent">
                 <h3>
                   <b>Behavioral Analysis</b>
                 </h3>
-                <Doughnut data={chartdata} />
+                <Doughnut data={chartData} />
               </div>
             </div>
           </div>

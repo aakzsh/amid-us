@@ -89,7 +89,7 @@ export const getHateSpeechAnalysis = (text) => {
 };
 
 
-export const getBehaviouralEmotionalAnalysis = (text) => {
+export const getBehaviouralAnalysis = (text) => {
     return getToken().then(t => {
         const payload = {
             document: {
@@ -104,14 +104,7 @@ export const getBehaviouralEmotionalAnalysis = (text) => {
         return axios.post(`${baseURL}/v2/categorize/behavioral-traits/${language}`, payload, { headers: headers })
             .then(r => {
                 const behavioral = r.data.data;
-                axios.post(`${baseURL}/v2/categorize/emotional-traits/${language}`, payload, { headers: headers })
-                    .then(r => {
-                        const emotional = r.data.data;
-                        return {
-                            emotional: emotional, behavioral: behavioral
-                        }
-                    })
-                    .catch(er => console.error(er));
+                return behavioral;
             })
             .catch(er => console.error(er));
     }).catch(err => console.error(err));
