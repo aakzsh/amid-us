@@ -116,3 +116,4 @@ export const getBehaviouralEmotionalAnalysis = (text) => {
             .catch(er => console.error(er));
     }).catch(err => console.error(err));
 };
+
