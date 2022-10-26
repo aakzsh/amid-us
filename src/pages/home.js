@@ -54,7 +54,7 @@ console.log(messages)
                             <h1 class="g-font-size-60--xs g-font-size-65--sm g-font-size-75--md g-font-weight--400 g-color--dark">Get Insights into your chats</h1>
                             <p class="g-font-size-22--xs g-font-size-24--sm g-color--dark g-font-weight--400">Analyze your chats with natural language processing powered by expert.ai</p>
                         </div>
-                        <a href="/jobs"
+                        <a href="#start"
                             class="text-uppercase s-btn s-btn--sm s-btn--dark-bg g-padding-x-30--xs">Get Started</a>
                     </div>
                 </div>
@@ -72,7 +72,7 @@ console.log(messages)
             </div>
 
         </div>
-        <div class="container g-padding-y-80--xs">
+        <div class="container g-padding-y-80--xs" id="start">
 
             <div class="row">
                 <div class="col-md-7">

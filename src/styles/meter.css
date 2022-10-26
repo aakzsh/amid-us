@@ -1,0 +1,43 @@
+.meter-body{
+    height: 2rem;
+    width: 100%;
+    background-color: #D9D9D9;
+    border-radius: 1rem;
+}
+
+.meter-score{
+    height: 2rem;
+    /* width: 10%; */
+    /* background-color: pink; */
+    background-image: linear-gradient(to right, #1E1E1E ,#889261);
+
+    border-radius: 1rem;
+}
+
+
+.meter-positive{
+    height: 2rem;
+    /* width: 10%; */
+    /* background-color: pink; */
+    background-color: #3B951B;
+
+    border-radius: 0rem 1rem 1rem 0rem;
+}
+
+.meter-body2{
+    height: 2rem;
+    width: 100%;
+    background-color: #D9D9D9;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.meter-negative{
+    height: 2rem;
+    /* width: 10%; */
+    /* background-color: pink; */
+    background-color: #863333;
+    border-radius: 1rem 0rem 0rem 1rem ;
+}
+

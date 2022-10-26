@@ -8,6 +8,7 @@ import Home from './pages/home';
 import Team from './pages/team';
 import About from './pages/about';
 import Result from './pages/result';
+import ScrollToTop from './components/scroller';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +16,8 @@ root.render(
     <div>
       <Header />
       <Router>
+        
+        <ScrollToTop>
         <Switch>
           <Route exact path='/' element={<Home />} />
         </Switch>
@@ -27,6 +30,8 @@ root.render(
         <Switch>
           <Route exact path='/result' element={<Result />}  />
         </Switch>
+        </ScrollToTop>
+        
       </Router>
       <Footer />
     </div>

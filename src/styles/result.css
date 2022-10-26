@@ -1,0 +1,204 @@
+
+.wordcloud-parent{
+    margin-top: 3rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    
+}
+
+.cloud-cont{
+    width: 40rem;
+    min-height: 10rem;
+    background-color: #333431;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.cloud-text{
+    margin-left: 2rem;
+}
+
+.subheading{
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.summary-child{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.iconimage{
+    height: 200px;
+}
+
+.message-summary{
+    margin-top: 3rem;
+    display: flex;
+    
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.count{
+margin-top: -1rem;
+font-weight: 700;
+}
+
+.topic{
+    margin-top: -2rem;
+    font-weight: 500;
+}
+
+
+.hatespeech {
+    margin-top: 3rem;
+}
+
+.most{
+    margin-top: 3rem;
+
+}
+.indie{
+    margin-top: 3rem;
+
+}
+.sentiment{
+    margin-top: 3rem;
+
+}
+
+.most-child-icon{
+    height: 100px;
+}
+
+.most{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-content{
+    gap: 2rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.chart-parent{
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.sentiments{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.download-report{
+    /* background-color: pink; */
+    cursor: pointer;
+    margin-top: 3rem;
+    margin-bottom: -2rem;
+    float: right;
+    width: 20rem;
+    height: 2rem;
+    margin-right: -6rem;
+}
+
+.sentiment-score{
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.Collapsible__trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #B5FFC1;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    height: 4rem;
+  }
+  
+  .Collapsible__trigger.is-open svg {
+    transform: rotate(180deg);
+  }
+
+
+.collapse-parent{
+    /* background-color: orange; */
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+
+    padding: 1rem;
+    box-shadow: 10px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.collapse-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h6{
+    font-weight: 700;
+}
+
+.rightcol{
+    /* width: 50rem; */
+    /* background-color: orange; */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.loading{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+
+}
+
+.loader2 {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #606D5B;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
