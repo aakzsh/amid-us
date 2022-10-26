@@ -1,0 +1,26 @@
+.team{
+    
+    height: 90vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    /* background-color: pink; */
+}
+
+
+
+.pfp{
+    height: 10rem;
+    width: auto;
+}
+
+.team-member{
+    display: flex;
+    font-size: 10rem;
+    font-weight: 600;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}

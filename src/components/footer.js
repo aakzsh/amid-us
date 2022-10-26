@@ -17,7 +17,7 @@ const Footer = () => {
                     <div class="col-xs-12 col-sm-4"></div>
                     <div class="col-xs-12 col-sm-4">
                         <p class="g-font-size-13--xs g-text-right--md g-margin-b-0--xs g-color--white-opacity">
-                            <span> Powered by </span><a class="g-color--white-opacity g-font-size-13--xs" href="https://chirpdevchallenge.devpost.com/" target="_blank" rel="noreferrer">Expert.ai</a>
+                            <span> Powered by </span><a class="g-color--white-opacity g-font-size-13--xs" href="https://www.expert.ai/" target="_blank" rel="noreferrer">Expert.ai</a>
                         </p>
                     </div>
                 </div>

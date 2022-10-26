@@ -24,8 +24,8 @@ const Header = () => {
                         <div class="s-header-v2__navbar-col s-header-v2__navbar-col--right" style={{ marginRight: 0 }}>
                             <div class="collapse navbar-collapse s-header-v2__navbar-collapse" id="nav-collapse">
                                 <ul class="s-header-v2__nav">
-                                    <li class="s-header-v2__nav-item"><a href="/jobs" class="s-header-v2__nav-link">About</a></li>
-                                    <li class="s-header-v2__nav-item"><a href="/spaces" class="s-header-v2__nav-link">Analyze Chat</a></li>
+                                    <li class="s-header-v2__nav-item"><a href="/about" class="s-header-v2__nav-link">About</a></li>
+                                    <li class="s-header-v2__nav-item"><a href="/" class="s-header-v2__nav-link">Analyze Chat</a></li>
                                     <li className="s-header-v2__nav-item"><a href="/team" class="s-header-v2__nav-link">Team</a>
                                     </li>
                                 </ul>
