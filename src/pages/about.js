@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import message from '../images/message.png'
 
 const About = () => {
 
     return (<div>
-      <div class="container g-padding-y-80--xs  g-fullheight--xs">
+        <div class="container g-padding-y-80--xs  g-fullheight--xs">
             <div class="row g-padding-y-50--xs">
                 <div class="col-md-6">
                     <h1 class="g-font-weight--700"><b>What's Amid Us and why did we create this?</b></h1>
@@ -12,7 +11,7 @@ const About = () => {
 
                 </div>
                 <div className="col-md-2"></div>
-                <div className="col-md-4"><img class="g-margin-t-0--xs" src={message} alt="Logo" width="360" /></div>
+                <div className="col-md-4"><img class="g-margin-t-0--xs" src="./img/message.png" alt="Logo" width="360" /></div>
             </div>
 
         </div>

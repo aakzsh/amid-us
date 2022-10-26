@@ -8,7 +8,6 @@ import Home from './pages/home';
 import Team from './pages/team';
 import About from './pages/about';
 import Result from './pages/result';
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -25,7 +24,7 @@ root.render(
           <Route exact path='/about' element={<About />} />
         </Switch>
         <Switch>
-          <Route exact path='/result' element={<Result />}  />
+          <Route exact path='/result' element={<Result />} />
         </Switch>
       </Router>
       <Footer />
