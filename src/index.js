@@ -28,7 +28,7 @@ root.render(
           <Route exact path='/about' element={<About />} />
         </Switch>
         <Switch>
-          <Route exact path='/result' element={<Result />}  />
+          <Route exact path='/result' element={<Result />} />
         </Switch>
         </ScrollToTop>
         

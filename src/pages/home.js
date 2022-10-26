@@ -8,14 +8,13 @@ const Home = () => {
     const [messages, setMessages] = useState([]);
     const [isDisabled, setDisabled] = useState(true);
 
-  
 
     const showFile = async (e) => {
-        if(e.target.files[0].name.slice(-3) == "txt"){
+        if (e.target.files[0].name.slice(-3) == "txt") {
             setDisabled(false)
 
         }
-        else{
+        else {
             alert("Please upload a .txt file of the exported WhatsApp chat")
         }
         e.preventDefault()
@@ -30,7 +29,7 @@ const Home = () => {
                     // Do whatever you want with messages
                     console.log(messages);
                     setMessages(messages);
-                   
+
 
                 })
                 .catch(err => {
@@ -38,11 +37,11 @@ const Home = () => {
                     console.error(err);
                 });
         };
-console.log(messages)
+        console.log(messages)
 
         // localStorage.setItem("chat", JSON.stringify([messages]));
         reader.readAsText(e.target.files[0])
-       
+
     }
 
     return (<div>
@@ -78,25 +77,25 @@ console.log(messages)
                 <div class="col-md-7">
                     <h2 class="g-font-size-32--xs g-font-size-36--md g-font-weight--600 g-color--dark">Get Started</h2>
                     <p class="g-font-size-16--xs g-color--dark g-margin-b-30--xs">Upload your chats and we'll show relevant insights for it!</p>
-                    
-                   
+
+
                     <label itemID="chatFile">WhatsApp Chat File *</label>
                     <input className="s-form-v5__input input" type="file" name="Chat File" id="chatFile"
                         placeholder="Select Chat File"
                         onChange={async (e) => {
                             await showFile(e);
                         }} />
-                    <button disabled={isDisabled} onClick={async ()=>{
-let x = localStorage.getItem("chat");
-if(x!=null || x.length!=0){
-    navigate('/result')
-}
-else{
-    alert("Something went wrong, please try again")
-}
+                    <button disabled={isDisabled} onClick={async () => {
+                        let x = localStorage.getItem("chat");
+                        if (x != null || x.length != 0) {
+                            navigate('/result')
+                        }
+                        else {
+                            alert("Something went wrong, please try again")
+                        }
                     }}
-                    class="text-uppercase s-btn s-btn--sm s-btn--dark-bg g-padding-x-30--xs">Analyze</button>
-                   
+                        class="text-uppercase s-btn s-btn--sm s-btn--dark-bg g-padding-x-30--xs">Analyze</button>
+
                 </div>
                 <div className="col-md-5">
 
