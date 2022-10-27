@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# Amid US
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Identify the bullying, quick notes, top discussed topics, and many more stats out of your chats.
 
-## Available Scripts
+## Run Locally using `npm i && npm start`
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
+Runs the app in the development mode locally after cloning.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+## Inspiration
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The world of the internet opens up a lot of pathways and opportunities for everyone. But, one aspect of it is bullying. We wanted to make something that could automate the process of identifying cyberbullying. Moreover, we wanted to make something that lets the users analyze their group chats, and find out the insights very easily, without having to read all of the chat over and over again, but instead, with a single click. Amid Us is powered by Expert AI, an amazing AI-powered NLP tool that can find the sentiments and deep insights of texts. It let us formulate everything and display it all to the user base. Users just have to upload their WhatsApp chats, which they can get by exporting them through their phone, and then get started!
 
-### `npm run build`
+## What it does
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The core idea is to remove the nuisances of discovering the word cloud, most frequently used topics for discussion, user activity, the overall sentiment of the group, emotion-specific to one user, total messages count, total words count, most active hours by days, most active days by week, chats discussion aligned to the goal of the group, is there any abusing going on, identify important talks so far and make a summary out of it.
+Keeping this in mind with the help of Expert.ai services we want to provide users with a seamless learning experience by giving a fully-fledged solution that aims to reduce the time and hassles we faced while joining new groups or identifying chats and provide a timeless solution to make your understanding efficient.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How we built it
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+AMID US is a progressive web app having its client interface developed on ReactJS. All the data analysis within the application is powered by Expert.ai for identifying the bullying, quick notes, top discussed topics, and many more stats out of chats. Here’re the details of the Expert.ai APIs we have utilized in the application:
 
-### `npm run eject`
+1. detect/hate-speech/en: to identify any bullying or abusive comments.
+2. To get a detailed analysis of the sentiment of the overall group or individual chat.
+   - /categorize/behavioral-traits/en
+   - categorize/emotional-traits/en
+   - analyze/standard/en/sentiment
+3. analyze/standard/en/relevant: To classify frequently used topics for discussion.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Challenges we ran into
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Working with new APIs from Expert.ai was new to us. Learning it at pace while trying to use it and Integrating everything along with a dedicated backend and front end was challenging but fun!
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Accomplishments that we're proud of
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The fact that we planned the idea, and website and coded the idea in three days. We are also extremely proud of having a proper understanding of everyone's schedule during this crucial time.
 
-## Learn More
+## What we learned
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Through this project, we learn how to leverage the amazing expert.ai NLP APIs. We also learn the process of developing a serverless application. This project can’t be done without the efforts and collaboration of a team with diverse backgrounds in technical skills.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## What's next for Amid Us
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The team is ambitious on looking forward to continuing to develop the project. Our next step is to make AMID US for teams groups and subreddit channels on one single platform.

@@ -441,7 +441,7 @@ const Result = () => {
                 </h3>
                 <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
                   data={chart1Data}
-                />;
+                />
                 {/* <Doughnut data={chart1Data} /> */}
               </div>
               <div className="chart-parent">
@@ -450,7 +450,7 @@ const Result = () => {
                 </h3>
                 <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
                   data={chartData}
-                />;
+                />
               </div>
             </div>}
           </div>
