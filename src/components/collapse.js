@@ -69,7 +69,7 @@ for (let index = 0; index < props.message.length; index++) {
     }
 
     console.log(score, hsTags);
-    setHs(Math.round(score / hsTags.length));
+    setHs(Math.round(score / hsTags.length/10));
   });
 
   findActiveHours(props.message);

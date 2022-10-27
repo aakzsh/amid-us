@@ -5,17 +5,12 @@ import trends from "../images/trend.png";
 import chaticon from "../images/messages.png";
 import wpmicon from "../images/wpm.png";
 import downloadicon from "../images/download.png";
-import chevron from "../images/chevron.png";
 import wordsicon from "../images/words.png";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
 import React, { useEffect, useState } from "react";
 import DonutChart from 'react-donut-chart';
 import Meter from "../components/meter";
-import { Doughnut } from "react-chartjs-2/dist";
 import SentimentMeter from "../components/sentiment-meter";
-
-import { pdfFromReact } from "generate-pdf-from-react-html";
 import {
   getKeyElements,
   getSentimentAnalysis,
@@ -29,24 +24,6 @@ const whatsapp = require("whatsapp-chat-parser");
 
 const Result = () => {
   ChartJS.register(ArcElement, Tooltip, Legend);
-
-  const tempcd = {
-    labels: ["Red", "blue", "green"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [1, 1, 1],
-        backgroundColor: [
-          "#5B6145", "#889261", "#4CC05F"
-        ],
-        borderColor: [
-          "#5B6145", "#889261", "#4CC05F"
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
   const getHSLevel = (level) => {
     return "";
     // if (level < 20) {
@@ -62,9 +39,8 @@ const Result = () => {
     // }
   };
 
-
-
   let text = localStorage.getItem("chat");
+
   const [messages, setMessages] = useState([]);
   const [topicsArr, setTopicsArr] = useState([]);
   const [messageCount, setMessageCount] = useState(0);
@@ -72,7 +48,6 @@ const Result = () => {
   const [data, setData] = useState([]);
   const [uniqueAuthors, setAuthors] = useState([]);
   const [hours, setHours] = useState("");
-
   const [wpm, setwpm] = useState(0);
   const [hs, seths] = useState(0);
   const [rawText, setRawText] = useState("");
@@ -211,8 +186,8 @@ const Result = () => {
           score += hsTags[index].score;
         }
 
-        console.log(score, hsTags);
-        seths(Math.round(score / hsTags.length));
+        console.log("hs hai" + {score, hsTags});
+        seths(Math.round(score / hsTags.length/10));
       });
 
       getSentimentAnalysis(rawText).then(value => {
@@ -435,7 +410,7 @@ const Result = () => {
               )}
             </div>
 
-            {chartData == tempcd ? <div></div> : <div className="sentiments">
+            {chartData == {} ? <div></div> : <div className="sentiments">
               <div className="chart-parent">
                 <h3>
                   <b>Emotional Analysis</b>
