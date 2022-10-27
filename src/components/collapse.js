@@ -30,7 +30,7 @@ const Collapse = (props) => {
                     </h6>
                   </div>
                   <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
+                    <h5>Most Talked Topics</h5>
                     <h6>
                       <b>00:00 - 01:00</b>
                     </h6>
@@ -39,13 +39,13 @@ const Collapse = (props) => {
 
                 <div>
                   <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
+                    <h5>Hate Speech Score</h5>
                     <h6>
                       <b>00:00 - 01:00</b>
                     </h6>
                   </div>
                   <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
+                    <h5>Sentiment Score</h5>
                     <h6>
                       <b>00:00 - 01:00</b>
                     </h6>
@@ -54,13 +54,13 @@ const Collapse = (props) => {
 
                 <div>
                   <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
+                    <h5>Dominating Emotional Trait</h5>
                     <h6>
                       <b>00:00 - 01:00</b>
                     </h6>
                   </div>
                   <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
+                    <h5>Dominating Behavioral Trait</h5>
                     <h6>
                       <b>00:00 - 01:00</b>
                     </h6>

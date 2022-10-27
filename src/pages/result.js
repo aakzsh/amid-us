@@ -10,6 +10,7 @@ import wordsicon from "../images/words.png";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import React, { useEffect, useState } from "react";
+import DonutChart from 'react-donut-chart';
 import Meter from "../components/meter";
 import { Doughnut } from "react-chartjs-2/dist";
 import SentimentMeter from "../components/sentiment-meter";
@@ -60,12 +61,16 @@ const Result = () => {
     }
   };
 
+
+
   let text = localStorage.getItem("chat");
   const [messages, setMessages] = useState([]);
   const [topicsArr, setTopicsArr] = useState([]);
   const [messageCount, setMessageCount] = useState(0);
   const [wordCount, setWordCount] = useState(0);
   const [data, setData] = useState([]);
+  const [uniqueAuthors, setAuthors] = useState([]);
+  const [hours, setHours] = useState("");
 
   const [wpm, setwpm] = useState(0);
   const [hs, seths] = useState(0);
@@ -74,8 +79,8 @@ const Result = () => {
   const [sentimentPos, setSentimentPos] = useState(0);
   const [sentimentOverall, setSentimentOverall] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [chartData, setChartData] = useState(tempcd);
-  const [chart1Data, setChart1Data] = useState(tempcd);
+  const [chartData, setChartData] = useState([]);
+  const [chart1Data, setChart1Data] = useState([]);
 
   const findMostFrequent = (str) => {
     var num = 20;
@@ -103,7 +108,7 @@ const Result = () => {
     }
     setData(wordfreq);
 
-    console.log(frequencyArr);
+    // console.log(frequencyArr);
   };
 
   const findMessageCount = (msg) => {
@@ -124,15 +129,61 @@ const Result = () => {
   };
 
   const findHateSpeech = () => { };
-  const findActiveHours = () => { };
+  const findActiveHours = (msg) => {
+    var hrs = { "00:00 - 04:00": 0, "04:00 - 08:00": 0, "08:00 - 12:00": 0, "12:00 - 16:00": 0, "16:00 - 20:00": 0, "20:00 - 24:00": 0, }
+
+    var messages = msg.filter(function (obj) {
+      return obj.date.getHours() >= 0 && obj.date.getHours() < 4;
+    });
+    hrs["00:00 - 04:00"] = messages.length
+    messages = msg.filter(function (obj) {
+      return obj.date.getHours() >= 4 && obj.date.getHours() < 8;
+    });
+    hrs["04:00 - 08:00"] = messages.length
+
+    messages = msg.filter(function (obj) {
+      return obj.date.getHours() >= 8 && obj.date.getHours() < 12;
+    });
+    hrs["08:00 - 12:00"] = messages.length
+
+    messages = msg.filter(function (obj) {
+      return obj.date.getHours() >= 12 && obj.date.getHours() < 16;
+    });
+    hrs["12:00 - 16:00"] = messages.length
+
+    messages = msg.filter(function (obj) {
+      return obj.date.getHours() >= 16 && obj.date.getHours() < 20;
+    });
+    hrs["16:00 - 20:00"] = messages.length
+
+    messages = msg.filter(function (obj) {
+      return obj.date.getHours() >= 20 && obj.date.getHours() < 24;
+    });
+    hrs["20:00 - 24:00"] = messages.length
+    // console.log()
+    setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
+    console.log(hrs)
+  };
   const findTrends = () => { };
   const findSentiment = () => { };
 
   useEffect(() => {
-    console.log(wordCount / messageCount);
+    // console.log(wordCount / messageCount);
     if (wordCount) {
       setwpm(Math.round(wordCount / messageCount));
       findMostFrequent(rawText);
+
+      const arrayUniqueByKey = [...new Map(messages.map(item =>
+        [item["author"], item])).values()];
+      var tempdata = []
+
+      for (let index = 0; index < arrayUniqueByKey.length; index++) {
+        // const element = array[index];
+        // console.log()
+        tempdata.push(arrayUniqueByKey[index]["author"])
+      }
+      setAuthors(tempdata)
+      // console.log(tempdata)
     }
   }, [wordCount, messageCount]);
 
@@ -196,243 +247,273 @@ const Result = () => {
       //   ],
       // };
 
-      getBehaviouralAnalysis(rawText).then((value) => {
-        console.log(value)
-        let tempLabels = [];
-        let tempData = [];
+      //       getBehaviouralAnalysis(rawText).then((value) => {
+      //         console.log(value)
+      // var finalCD = [];
+      //         let tempLabels = [];
+      //         let tempData = [];
 
-        const data = value.categories;
-        for (let i = 0; i < data.length; i++) {
-          tempLabels.push(data[i].label);
-          tempData.push(data[i].score);
-        }
+      //         const data = value.categories;
+      //         for (let i = 0; i < data.length; i++) {
+      //   finalCD.push({"label": data[i].label,"value": data[i].score })
+      //         }
 
-        const cd = {
-          labels: tempLabels,
-          dataset: [
-            {
-              data: tempData,
-              label: "# of Votes",
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-              ],
-              borderColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        }
-        console.log(cd)
-        setChartData(cd);
-      },
+      //         console.log(finalCD)
 
-        getEmotionalAnalysis(rawText).then((value) => {
-          console.log(value)
-          let tempLabels = [];
-          let tempData = [];
+      //         const cd = {
+      //           labels: tempLabels,
+      //           dataset: [
+      //             {
+      //               data: tempData,
+      //               label: "# of Votes",
+      //               backgroundColor: [
+      //                 "rgba(255, 99, 132, 0.2)",
+      //                 "rgba(54, 162, 235, 0.2)",
+      //                 "rgba(255, 206, 86, 0.2)",
+      //               ],
+      //               borderColor: [
+      //                 "rgba(255, 99, 132, 1)",
+      //                 "rgba(54, 162, 235, 1)",
+      //                 "rgba(255, 206, 86, 1)",
+      //               ],
+      //               borderWidth: 1,
+      //             },
+      //           ],
+      //         }
+      // console.log(cd)
+      //         setChartData(finalCD);
+      //       },
 
-          const data = value.categories;
-          for (let i = 0; i < data.length; i++) {
-            tempLabels.push(data[i].label);
-            tempData.push(data[i].score);
-          }
 
-          const cd = {
-            labels: tempLabels,
-            dataset: [
-              {
-                data: tempData,
-                label: "# of Votes",
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.2)",
-                  "rgba(54, 162, 235, 0.2)",
-                  "rgba(255, 206, 86, 0.2)",
-                ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                ],
-                borderWidth: 1,
-              },
+      //       getEmotionalAnalysis(rawText).then((value) => {
+      //         console.log(value)
+      //         var finalCD = [];
+
+      //         const data = value.categories;
+      //         for (let i = 0; i < data.length; i++) {
+      //   finalCD.push({"label": data[i].label,"value": data[i].score })
+      //         }
+
+      //         console.log(finalCD)
+
+      const data = value.categories;
+      for (let i = 0; i < data.length; i++) {
+        tempLabels.push(data[i].label);
+        tempData.push(data[i].score);
+      }
+
+      const cd = {
+        labels: tempLabels,
+        dataset: [
+          {
+            data: tempData,
+            label: "# of Votes",
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
             ],
-          }
-          console.log(cd)
-          setChart1Data(cd);
-        }
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      }
+      console.log(cd)
+      setChart1Data(cd);
+    }
 
         ));
-    }
+}
   }, [rawText]);
 
-  useEffect(() => {
-    whatsapp.parseString(text).then((messages) => {
-      messages = messages.filter(function (obj) {
-        return obj.author !== "System" && obj.message != "<Media omitted>";
-      });
-
-      setMessages(messages);
-
-      console.log(messages);
-
-      (async () => {
-        await findMessageCount(messages);
-        await findWordCount(messages);
-      })();
-
-      console.log(wordCount, messageCount);
-      //   findMostFrequent(rawText);
-      findHateSpeech();
-      findActiveHours();
-      findTrends();
-      findSentiment();
-      setIsLoading(false);
+useEffect(() => {
+  whatsapp.parseString(text).then((messages) => {
+    messages = messages.filter(function (obj) {
+      return obj.author !== "System" && obj.message != "<Media omitted>";
     });
-  }, []);
 
-  return (
-    <div>
-      {isLoading ? (
-        <div className="container g-padding-y-80--xs  g-fullheight--xs loading">
-          <div className="loader2"></div>
-          <h3>We're loading your stats</h3>
+    setMessages(messages);
+
+    // console.log(messages);
+
+
+    (async () => {
+      await findMessageCount(messages);
+      await findWordCount(messages);
+    })();
+
+    // console.log(wordCount, messageCount);
+    //   findMostFrequent(rawText);
+    findHateSpeech();
+    findActiveHours(messages);
+    findTrends();
+    findSentiment();
+    setIsLoading(false);
+  });
+}, []);
+
+return (
+  <div>
+    {isLoading ? (
+      <div className="container g-padding-y-80--xs  g-fullheight--xs loading">
+        <div className="loader2"></div>
+        <h3>We're loading your stats</h3>
+      </div>
+    ) : (
+      <div className="container g-padding-y-120--xs fullpage">
+        <h1 className="g-font-weight--500 g-font-size-50--xs">
+          <b>Chat Analysis</b>
+        </h1>
+
+        <div className="wordcloud-parent">
+          <div className="cloud-cont">
+            <center>
+              {" "}
+              <TagCloud maxSize={45} minSize={15} tags={data} randomSeed={12} colorOptions={{ "hue": "green", "luminosity ": "bright" }} />
+            </center>{" "}
+          </div>
+          <p className="cloud-text subheading">Word Cloud</p>
         </div>
-      ) : (
-        <div className="container g-padding-y-120--xs fullpage">
-          <h1 className="g-font-weight--500 g-font-size-50--xs">
-            <b>Chat Analysis</b>
-          </h1>
 
-          <div className="wordcloud-parent">
-            <div className="cloud-cont">
-              <center>
-                {" "}
-                <TagCloud maxSize={45} minSize={15} tags={data} randomSeed={12} colorOptions={{ "hue": "green", "luminosity ": "bright" }} />
-              </center>{" "}
-            </div>
-            <p className="cloud-text subheading">Word Cloud</p>
+        <div className="message-summary">
+          <div className="summary-child">
+            <img src={chaticon} alt="" className="iconimage" />
+            <h2 className="count">{messageCount}</h2>
+            <h4 className="topic">Messages</h4>
           </div>
+          <div className="summary-child">
+            <img src={wordsicon} alt="" className="iconimage" />
+            <h2 className="count">{wordCount}</h2>
+            <h4 className="topic">Words</h4>
+          </div>
+          <div className="summary-child">
+            <img src={wpmicon} alt="" className="iconimage" />
+            <h2 className="count">{wpm}</h2>
+            <h4 className="topic">Words/Message</h4>
+          </div>
+        </div>
 
-          <div className="message-summary">
-            <div className="summary-child">
-              <img src={chaticon} alt="" className="iconimage" />
-              <h2 className="count">{messageCount}</h2>
-              <h4 className="topic">Messages</h4>
-            </div>
-            <div className="summary-child">
-              <img src={wordsicon} alt="" className="iconimage" />
-              <h2 className="count">{wordCount}</h2>
-              <h4 className="topic">Words</h4>
-            </div>
-            <div className="summary-child">
-              <img src={wpmicon} alt="" className="iconimage" />
-              <h2 className="count">{wpm}</h2>
-              <h4 className="topic">Words/Message</h4>
+        <div className="hatespeech">
+          <p className="subheading">Hate Speech Meter</p>
+          <Meter score={hs} />
+          <h4>
+            <b>{"Score: " + hs + "/100 " + getHSLevel(hs)}</b>
+          </h4>
+        </div>
+
+        <div className="most">
+          <div className="most-child">
+            <p className="subheading">Most Active Hours</p>
+            <div className="icon-content">
+              <img src={clock} alt="" className="most-child-icon" />
+              <h4>
+                <b>{hours}</b>
+              </h4>
             </div>
           </div>
-
-          <div className="hatespeech">
-            <p className="subheading">Hate Speech Meter</p>
-            <Meter score={hs} />
-            <h4>
-              <b>{"Score: " + hs + "/100 " + getHSLevel(hs)}</b>
-            </h4>
-          </div>
-
-          <div className="most">
-            <div className="most-child">
-              <p className="subheading">Most Active Hours</p>
-              <div className="icon-content">
-                <img src={clock} alt="" className="most-child-icon" />
-                <h4>
-                  <b>{"7:00 - 8:00"}</b>
-                </h4>
-              </div>
-            </div>
-            <div className="most-child">
-              <p className="subheading">Most Talked Topics</p>
-              <div className="icon-content">
-                <img src={trends} alt="" className="most-child-icon" />
-                <div className="" style={{ padding: "0px" }}>
-                  {topicsArr
-                    ? topicsArr.map((item) => {
-                      return (
-                        <>
-                          <h4 style={{ padding: "0px" }}>
-                            <b>{item}</b>
-                          </h4>
-                        </>
-                      );
-                    })
-                    : ""}
-                </div>
+          <div className="most-child">
+            <p className="subheading">Most Talked Topics</p>
+            <div className="icon-content">
+              <img src={trends} alt="" className="most-child-icon" />
+              <div className="" style={{ padding: "0px" }}>
+                {topicsArr
+                  ? topicsArr.map((item) => {
+                    return (
+                      <>
+                        <h4 style={{ padding: "0px" }}>
+                          <b>{item}</b>
+                        </h4>
+                      </>
+                    );
+                  })
+                  : ""}
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="sentiment">
-            <p className="subheading">Sentiment Analysis</p>
-            <SentimentMeter
-              score={sentimentOverall}
-              positive={sentimentPos}
-              negative={sentimentNeg}
-            />
+        <div className="sentiment">
+          <p className="subheading">Sentiment Analysis</p>
+          <SentimentMeter
+            score={sentimentOverall}
+            positive={sentimentPos}
+            negative={sentimentNeg}
+          />
 
-            <div className="sentiment-score">
+          <div className="sentiment-score">
+            <h3>
+              <b>Overall Sentiment Score:</b>
+            </h3>
+            {sentimentOverall > 0 ? (
+              <h1 style={{ color: "#3B951B" }}>
+                <b>{sentimentOverall}</b>
+              </h1>
+            ) : (
+              <h1 style={{ color: "#863333" }}>
+                <b>{sentimentOverall}</b>
+              </h1>
+            )}
+          </div>
+
+          {chartData == tempcd ? <div></div> : <div className="sentiments">
+            <div className="chart-parent">
               <h3>
-                <b>Overall Sentiment Score:</b>
+                <b>Emotional Analysis</b>
               </h3>
-              {sentimentOverall > 0 ? (
-                <h1 style={{ color: "#3B951B" }}>
-                  <b>{sentimentOverall}</b>
-                </h1>
-              ) : (
-                <h1 style={{ color: "#863333" }}>
-                  <b>{sentimentOverall}</b>
-                </h1>
-              )}
+              <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
+                data={chart1Data}
+              />;
+              {/* <Doughnut data={chart1Data} /> */}
             </div>
-
-            {chartData == tempcd ? <div></div> : <div className="sentiments">
-              <div className="chart-parent">
-                <h3>
-                  <b>Emotional Analysis</b>
-                </h3>
-                <Doughnut data={chart1Data} />
-              </div>
-              <div className="chart-parent">
-                <h3>
-                  <b>Behavioral Analysis</b>
-                </h3>
-                <Doughnut data={chartData} />
-              </div>
-            </div>}
-          </div>
-
-          <div className="indie">
-            <p className="subheading">Individual Stats</p>
-
-            <Collapse name="frooti" messageCount={800} activeHours={60} />
-
-          </div>
-
-          <div
-            className="download-report"
-            onClick={() => {
-              window.print();
-            }}
-          >
-            <img src={downloadicon} alt="" style={{ height: "2rem" }} />
-          </div>
+            <div className="chart-parent">
+              <h3>
+                <b>Behavioral Analysis</b>
+              </h3>
+              <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
+                data={chartData}
+              />;
+            </div>
+          </div>}
         </div>
-      )}
-    </div>
-  );
+
+        <div className="indie">
+          <p className="subheading">Individual Stats</p>
+
+          {topicsArr
+            ? uniqueAuthors.map((item) => {
+              const msg = messages.filter(function (obj) {
+                return obj.author == item;
+              });
+              return (
+                <>
+                  <Collapse name={item} messageCount={msg.length} activeHours={60} />
+                  <br />
+
+                </>
+              );
+            })
+            : ""}
+
+
+
+        </div>
+
+        <div
+          className="download-report"
+          onClick={() => {
+            window.print();
+          }}
+        >
+          <img src={downloadicon} alt="" style={{ height: "2rem" }} />
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default Result;
