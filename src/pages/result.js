@@ -48,17 +48,18 @@ const Result = () => {
   };
 
   const getHSLevel = (level) => {
-    if (level < 20) {
-      return "[Very Low]";
-    } else if (level >= 20 || level < 40) {
-      return "[Low]";
-    } else if (level >= 40 || level < 60) {
-      return "[Moderate]";
-    } else if (level >= 60 || level < 80) {
-      return "[High]";
-    } else if (level >= 80 || level <= 100) {
-      return "[Extremely High]";
-    }
+    return "";
+    // if (level < 20) {
+    //   return "[Very Low]";
+    // } else if (level >= 20 || level < 40) {
+    //   return "[Low]";
+    // } else if (level >= 40 || level < 60) {
+    //   return "[Moderate]";
+    // } else if (level >= 60 || level < 80) {
+    //   return "[High]";
+    // } else if (level >= 80 || level <= 100) {
+    //   return "[Extremely High]";
+    // }
   };
 
 
@@ -189,119 +190,119 @@ const Result = () => {
 
   useEffect(() => {
     if (rawText != "") {
-      // getKeyElements(rawText).then((value) => {
-      //   const topics = value.topics;
+      getKeyElements(rawText).then((value) => {
+        const topics = value.topics;
 
-      //   let tempTopics = [];
-      //   let len = topics.length > 3 ? 3 : topics.length;
-      //   for (let i = 0; i < len; i++) {
-      //     tempTopics.push(topics[i].label);
-      //   }
+        let tempTopics = [];
+        let len = topics.length > 3 ? 3 : topics.length;
+        for (let i = 0; i < len; i++) {
+          tempTopics.push(topics[i].label);
+        }
 
-      //   console.log(tempTopics)
-      //   setTopicsArr(tempTopics);
-      // });
-      // getHateSpeechAnalysis(rawText).then((value) => {
-      //   console.log(value);
-      //   let hsTags = value.categories;
-      //   let score = 0;
-      //   // let count = 0;
-      //   for (let index = 0; index < hsTags.length; index++) {
-      //     score += hsTags[index].score;
-      //   }
+        console.log(tempTopics)
+        setTopicsArr(tempTopics);
+      });
+      getHateSpeechAnalysis(rawText).then((value) => {
+        console.log(value);
+        let hsTags = value.categories;
+        let score = 0;
+        // let count = 0;
+        for (let index = 0; index < hsTags.length; index++) {
+          score += hsTags[index].score;
+        }
 
-      //   console.log(score, hsTags);
-      //   seths(Math.round(score / hsTags.length));
-      // });
+        console.log(score, hsTags);
+        seths(Math.round(score / hsTags.length));
+      });
 
-      // getSentimentAnalysis(rawText).then(value => {
-      //   setSentimentNeg(value.negativity)
-      //   setSentimentPos(value.positivity)
-      //   setSentimentOverall(value.overall)
-      // })
+      getSentimentAnalysis(rawText).then(value => {
+        setSentimentNeg(value.negativity)
+        setSentimentPos(value.positivity)
+        setSentimentOverall(value.overall)
+      })
 
-      // const chartdata = {
-      //   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-      //   datasets: [
-      //     {
-      //       label: "# of Votes",
-      //       data: [12, 19, 3, 5, 2, 3],
-      //       backgroundColor: [
-      //         "rgba(255, 99, 132, 0.2)",
-      //         "rgba(54, 162, 235, 0.2)",
-      //         "rgba(255, 206, 86, 0.2)",
-      //         "rgba(75, 192, 192, 0.2)",
-      //         "rgba(153, 102, 255, 0.2)",
-      //         "rgba(255, 159, 64, 0.2)",
-      //       ],
-      //       borderColor: [
-      //         "rgba(255, 99, 132, 1)",
-      //         "rgba(54, 162, 235, 1)",
-      //         "rgba(255, 206, 86, 1)",
-      //         "rgba(75, 192, 192, 1)",
-      //         "rgba(153, 102, 255, 1)",
-      //         "rgba(255, 159, 64, 1)",
-      //       ],
-      //       borderWidth: 1,
-      //     },
-      //   ],
-      // };
+      const chartdata = {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      };
 
-      //       getBehaviouralAnalysis(rawText).then((value) => {
-      //         console.log(value)
-      // var finalCD = [];
-      //         let tempLabels = [];
-      //         let tempData = [];
+            getBehaviouralAnalysis(rawText).then((value) => {
+              console.log(value)
+      var finalCD = [];
+              let tempLabels = [];
+              let tempData = [];
 
-      //         const data = value.categories;
-      //         for (let i = 0; i < data.length; i++) {
-      //   finalCD.push({"label": data[i].label,"value": data[i].score })
-      //         }
+              const data = value.categories;
+              for (let i = 0; i < data.length; i++) {
+        finalCD.push({"label": data[i].label,"value": data[i].score })
+              }
 
-      //         console.log(finalCD)
+              console.log(finalCD)
 
-      //         const cd = {
-      //           labels: tempLabels,
-      //           dataset: [
-      //             {
-      //               data: tempData,
-      //               label: "# of Votes",
-      //               backgroundColor: [
-      //                 "rgba(255, 99, 132, 0.2)",
-      //                 "rgba(54, 162, 235, 0.2)",
-      //                 "rgba(255, 206, 86, 0.2)",
-      //               ],
-      //               borderColor: [
-      //                 "rgba(255, 99, 132, 1)",
-      //                 "rgba(54, 162, 235, 1)",
-      //                 "rgba(255, 206, 86, 1)",
-      //               ],
-      //               borderWidth: 1,
-      //             },
-      //           ],
-      //         }
+              const cd = {
+                labels: tempLabels,
+                dataset: [
+                  {
+                    data: tempData,
+                    label: "# of Votes",
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.2)",
+                      "rgba(54, 162, 235, 0.2)",
+                      "rgba(255, 206, 86, 0.2)",
+                    ],
+                    borderColor: [
+                      "rgba(255, 99, 132, 1)",
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(255, 206, 86, 1)",
+                    ],
+                    borderWidth: 1,
+                  },
+                ],
+              }
+      console.log(cd)
+              setChartData(finalCD);
+            },
+
+
+            getEmotionalAnalysis(rawText).then((value) => {
+              console.log(value)
+              var finalCD = [];
+
+              const data = value.categories;
+              for (let i = 0; i < data.length; i++) {
+        finalCD.push({"label": data[i].label,"value": data[i].score })
+              }
+
+              console.log(finalCD)
+
+
       // console.log(cd)
-      //         setChartData(finalCD);
-      //       },
+              setChart1Data(finalCD);
+            },)
 
-
-      //       getEmotionalAnalysis(rawText).then((value) => {
-      //         console.log(value)
-      //         var finalCD = [];
-
-      //         const data = value.categories;
-      //         for (let i = 0; i < data.length; i++) {
-      //   finalCD.push({"label": data[i].label,"value": data[i].score })
-      //         }
-
-      //         console.log(finalCD)
-
-
-      // // console.log(cd)
-      //         setChart1Data(finalCD);
-      //       },)
-
-      // );
+      );
     }
   }, [rawText]);
 
@@ -465,7 +466,7 @@ const Result = () => {
                 });
                 return (
                   <>
-                    <Collapse name={item} messageCount={msg.length} activeHours={60} />
+                    <Collapse name={item} messageCount={msg.length} activeHours={60} message={msg} />
                     <br />
 
                   </>

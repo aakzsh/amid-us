@@ -1,3 +1,6 @@
+
+
+
 .team{
     
     height: 70vh;
@@ -9,6 +12,18 @@
 }
 
 
+@media screen and (max-width: 600px) {
+    .team{
+    transform: scale(0.5);
+    margin-top: -17rem;
+        height: 150vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        /* background-color: pink; */
+    }
+  }
 
 .pfp{
     height: 10rem;
