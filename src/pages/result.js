@@ -10,6 +10,7 @@ import wordsicon from "../images/words.png";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import React, { useEffect, useState } from "react";
+import DonutChart from 'react-donut-chart';
 import Meter from "../components/meter";
 import { Doughnut } from "react-chartjs-2/dist";
 import SentimentMeter from "../components/sentiment-meter";
@@ -60,12 +61,15 @@ const Result = () => {
     }
   };
 
+  
+
   let text = localStorage.getItem("chat");
   const [messages, setMessages] = useState([]);
   const [topicsArr, setTopicsArr] = useState([]);
   const [messageCount, setMessageCount] = useState(0);
   const [wordCount, setWordCount] = useState(0);
   const [data, setData] = useState([]);
+  const [uniqueAuthors, setAuthors] = useState([]);
 
   const [wpm, setwpm] = useState(0);
   const [hs, seths] = useState(0);
@@ -74,8 +78,8 @@ const Result = () => {
   const [sentimentPos, setSentimentPos] = useState(0);
   const [sentimentOverall, setSentimentOverall] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [chartData, setChartData] = useState(tempcd);
-  const [chart1Data, setChart1Data] = useState(tempcd);
+  const [chartData, setChartData] = useState([]);
+  const [chart1Data, setChart1Data] = useState([]);
 
   const findMostFrequent = (str) => {
     var num = 10;
@@ -132,6 +136,18 @@ const Result = () => {
     if (wordCount) {
       setwpm(Math.round(wordCount / messageCount));
       findMostFrequent(rawText);
+
+      const arrayUniqueByKey = [...new Map(messages.map(item =>
+        [item["author"], item])).values()];
+      var tempdata = []
+
+      for (let index = 0; index < arrayUniqueByKey.length; index++) {
+        // const element = array[index];
+        // console.log()
+        tempdata.push(arrayUniqueByKey[index]["author"])
+      }
+      setAuthors(tempdata)
+      console.log(tempdata)
     }
   }, [wordCount, messageCount]);
 
@@ -195,77 +211,61 @@ const Result = () => {
       //   ],
       // };
 
-      getBehaviouralAnalysis(rawText).then((value) => {
-        console.log(value)
-        let tempLabels = [];
-        let tempData = [];
+//       getBehaviouralAnalysis(rawText).then((value) => {
+//         console.log(value)
+// var finalCD = [];
+//         let tempLabels = [];
+//         let tempData = [];
 
-        const data = value.categories;
-        for (let i = 0; i < data.length; i++) {
-          tempLabels.push(data[i].label);
-          tempData.push(data[i].score);
-        }
+//         const data = value.categories;
+//         for (let i = 0; i < data.length; i++) {
+//   finalCD.push({"label": data[i].label,"value": data[i].score })
+//         }
 
-        const cd = {
-          labels: tempLabels,
-          dataset: [
-            {
-              data: tempData,
-              label: "# of Votes",
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-              ],
-              borderColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        }
-console.log(cd)
-        setChartData(cd);
-      },
+//         console.log(finalCD)
 
-      getEmotionalAnalysis(rawText).then((value) => {
-        console.log(value)
-        let tempLabels = [];
-        let tempData = [];
+//         const cd = {
+//           labels: tempLabels,
+//           dataset: [
+//             {
+//               data: tempData,
+//               label: "# of Votes",
+//               backgroundColor: [
+//                 "rgba(255, 99, 132, 0.2)",
+//                 "rgba(54, 162, 235, 0.2)",
+//                 "rgba(255, 206, 86, 0.2)",
+//               ],
+//               borderColor: [
+//                 "rgba(255, 99, 132, 1)",
+//                 "rgba(54, 162, 235, 1)",
+//                 "rgba(255, 206, 86, 1)",
+//               ],
+//               borderWidth: 1,
+//             },
+//           ],
+//         }
+// console.log(cd)
+//         setChartData(finalCD);
+//       },
 
-        const data = value.categories;
-        for (let i = 0; i < data.length; i++) {
-          tempLabels.push(data[i].label);
-          tempData.push(data[i].score);
-        }
 
-        const cd = {
-          labels: tempLabels,
-          dataset: [
-            {
-              data: tempData,
-              label: "# of Votes",
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-              ],
-              borderColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        }
-console.log(cd)
-        setChart1Data(cd);
-      }
-      
-      ));
+//       getEmotionalAnalysis(rawText).then((value) => {
+//         console.log(value)
+//         var finalCD = [];
+
+//         const data = value.categories;
+//         for (let i = 0; i < data.length; i++) {
+//   finalCD.push({"label": data[i].label,"value": data[i].score })
+//         }
+
+//         console.log(finalCD)
+
+       
+// // console.log(cd)
+//         setChart1Data(finalCD);
+//       },)
+
+      // );
     }
   }, [rawText]);
 
@@ -402,21 +402,41 @@ console.log(cd)
                 <h3>
                   <b>Emotional Analysis</b>
                 </h3>
-                <Doughnut data={chart1Data} />
+                <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={[ "#5B6145","#889261","#4CC05F" ]}
+  data={chart1Data}
+/>;
+                {/* <Doughnut data={chart1Data} /> */}
               </div>
               <div className="chart-parent">
                 <h3>
                   <b>Behavioral Analysis</b>
                 </h3>
-                <Doughnut data={chartData} />
+                <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={[ "#5B6145","#889261","#4CC05F" ]}
+  data={chartData}
+/>;
               </div>
             </div>}
           </div>
 
           <div className="indie">
             <p className="subheading">Individual Stats</p>
+
+            {topicsArr
+                    ? uniqueAuthors.map((item) => {
+                      const msg = messages.filter(function (obj) {
+                        return obj.author == item;
+                      });
+                        return (
+                          <>
+                          <Collapse name={item} messageCount={msg.length} activeHours={60}/>
+                          <br />
+                            
+                          </>
+                        );
+                      })
+                    : ""}
             
-           <Collapse name="frooti" messageCount={800} activeHours={60}/>
+           
 
           </div>
 
