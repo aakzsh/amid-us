@@ -34,12 +34,12 @@ const Result = () => {
     datasets: [
       {
         label: "# of Votes",
-        data: [1,1,1],
+        data: [1, 1, 1],
         backgroundColor: [
-          "#5B6145","#889261","#4CC05F" 
+          "#5B6145", "#889261", "#4CC05F"
         ],
         borderColor: [
-            "#5B6145","#889261","#4CC05F" 
+          "#5B6145", "#889261", "#4CC05F"
         ],
         borderWidth: 1,
       },
@@ -78,11 +78,12 @@ const Result = () => {
   const [chart1Data, setChart1Data] = useState(tempcd);
 
   const findMostFrequent = (str) => {
-    var num = 10;
+    var num = 20;
+    const stopwords = ["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "will", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"];
     const strArr = str.toLowerCase().split(" ");
     const map = {};
     strArr.forEach((word) => {
-      if (word.length > 3) {
+      if (!stopwords.includes(word) && word.length > 2) {
         if (map.hasOwnProperty(word)) {
           map[word]++;
         } else {
@@ -94,7 +95,7 @@ const Result = () => {
     frequencyArr.sort((a, b) => b[1] - a[1]);
     var wordfreq = [];
 
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < num; index++) {
       wordfreq.push({
         value: frequencyArr[index][0],
         count: frequencyArr[index][1],
@@ -122,10 +123,10 @@ const Result = () => {
     setWordCount(count);
   };
 
-  const findHateSpeech = () => {};
-  const findActiveHours = () => {};
-  const findTrends = () => {};
-  const findSentiment = () => {};
+  const findHateSpeech = () => { };
+  const findActiveHours = () => { };
+  const findTrends = () => { };
+  const findSentiment = () => { };
 
   useEffect(() => {
     console.log(wordCount / messageCount);
@@ -226,46 +227,46 @@ const Result = () => {
             },
           ],
         }
-console.log(cd)
+        console.log(cd)
         setChartData(cd);
       },
 
-      getEmotionalAnalysis(rawText).then((value) => {
-        console.log(value)
-        let tempLabels = [];
-        let tempData = [];
+        getEmotionalAnalysis(rawText).then((value) => {
+          console.log(value)
+          let tempLabels = [];
+          let tempData = [];
 
-        const data = value.categories;
-        for (let i = 0; i < data.length; i++) {
-          tempLabels.push(data[i].label);
-          tempData.push(data[i].score);
+          const data = value.categories;
+          for (let i = 0; i < data.length; i++) {
+            tempLabels.push(data[i].label);
+            tempData.push(data[i].score);
+          }
+
+          const cd = {
+            labels: tempLabels,
+            dataset: [
+              {
+                data: tempData,
+                label: "# of Votes",
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                ],
+                borderColor: [
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          }
+          console.log(cd)
+          setChart1Data(cd);
         }
 
-        const cd = {
-          labels: tempLabels,
-          dataset: [
-            {
-              data: tempData,
-              label: "# of Votes",
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-              ],
-              borderColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-              ],
-              borderWidth: 1,
-            },
-          ],
-        }
-console.log(cd)
-        setChart1Data(cd);
-      }
-      
-      ));
+        ));
     }
   }, [rawText]);
 
@@ -302,7 +303,7 @@ console.log(cd)
           <h3>We're loading your stats</h3>
         </div>
       ) : (
-        <div className="container g-padding-y-80--xs fullpage">
+        <div className="container g-padding-y-120--xs fullpage">
           <h1 className="g-font-weight--500 g-font-size-50--xs">
             <b>Chat Analysis</b>
           </h1>
@@ -311,7 +312,7 @@ console.log(cd)
             <div className="cloud-cont">
               <center>
                 {" "}
-                <TagCloud maxSize={35} minSize={20} tags={data} />
+                <TagCloud maxSize={45} minSize={15} tags={data} randomSeed={12} colorOptions={{ "hue": "green", "luminosity ": "bright" }} />
               </center>{" "}
             </div>
             <p className="cloud-text subheading">Word Cloud</p>
@@ -360,14 +361,14 @@ console.log(cd)
                 <div className="" style={{ padding: "0px" }}>
                   {topicsArr
                     ? topicsArr.map((item) => {
-                        return (
-                          <>
-                            <h4 style={{ padding: "0px" }}>
-                              <b>{item}</b>
-                            </h4>
-                          </>
-                        );
-                      })
+                      return (
+                        <>
+                          <h4 style={{ padding: "0px" }}>
+                            <b>{item}</b>
+                          </h4>
+                        </>
+                      );
+                    })
                     : ""}
                 </div>
               </div>
@@ -397,7 +398,7 @@ console.log(cd)
               )}
             </div>
 
-            {chartData==tempcd?<div></div>:<div className="sentiments">
+            {chartData == tempcd ? <div></div> : <div className="sentiments">
               <div className="chart-parent">
                 <h3>
                   <b>Emotional Analysis</b>
@@ -415,8 +416,8 @@ console.log(cd)
 
           <div className="indie">
             <p className="subheading">Individual Stats</p>
-            
-           <Collapse name="frooti" messageCount={800} activeHours={60}/>
+
+            <Collapse name="frooti" messageCount={800} activeHours={60} />
 
           </div>
 
