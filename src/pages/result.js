@@ -186,8 +186,10 @@ const Result = () => {
           score += hsTags[index].score;
         }
 
-        console.log("hs hai" + {score, hsTags});
-        seths(Math.round(score / hsTags.length/10));
+        console.log("hs hai" + { score, hsTags });
+        const len = hsTags.length ? hsTags.length : 1;
+        score = score / messageCount;
+        seths(Math.round(score / len));
       });
 
       getSentimentAnalysis(rawText).then(value => {
@@ -223,59 +225,59 @@ const Result = () => {
         ],
       };
 
-            getBehaviouralAnalysis(rawText).then((value) => {
-              console.log(value)
-      var finalCD = [];
-              let tempLabels = [];
-              let tempData = [];
+      getBehaviouralAnalysis(rawText).then((value) => {
+        console.log(value)
+        var finalCD = [];
+        let tempLabels = [];
+        let tempData = [];
 
-              const data = value.categories;
-              for (let i = 0; i < data.length; i++) {
-        finalCD.push({"label": data[i].label,"value": data[i].score })
-              }
+        const data = value.categories;
+        for (let i = 0; i < data.length; i++) {
+          finalCD.push({ "label": data[i].label, "value": data[i].score })
+        }
 
-              console.log(finalCD)
+        console.log(finalCD)
 
-              const cd = {
-                labels: tempLabels,
-                dataset: [
-                  {
-                    data: tempData,
-                    label: "# of Votes",
-                    backgroundColor: [
-                      "rgba(255, 99, 132, 0.2)",
-                      "rgba(54, 162, 235, 0.2)",
-                      "rgba(255, 206, 86, 0.2)",
-                    ],
-                    borderColor: [
-                      "rgba(255, 99, 132, 1)",
-                      "rgba(54, 162, 235, 1)",
-                      "rgba(255, 206, 86, 1)",
-                    ],
-                    borderWidth: 1,
-                  },
-                ],
-              }
-      console.log(cd)
-              setChartData(finalCD);
+        const cd = {
+          labels: tempLabels,
+          dataset: [
+            {
+              data: tempData,
+              label: "# of Votes",
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+              ],
+              borderWidth: 1,
             },
+          ],
+        }
+        console.log(cd)
+        setChartData(finalCD);
+      },
 
 
-            getEmotionalAnalysis(rawText).then((value) => {
-              console.log(value)
-              var finalCD = [];
+        getEmotionalAnalysis(rawText).then((value) => {
+          console.log(value)
+          var finalCD = [];
 
-              const data = value.categories;
-              for (let i = 0; i < data.length; i++) {
-        finalCD.push({"label": data[i].label,"value": data[i].score })
-              }
+          const data = value.categories;
+          for (let i = 0; i < data.length; i++) {
+            finalCD.push({ "label": data[i].label, "value": data[i].score })
+          }
 
-              console.log(finalCD)
+          console.log(finalCD)
 
 
-      // console.log(cd)
-              setChart1Data(finalCD);
-            },)
+          // console.log(cd)
+          setChart1Data(finalCD);
+        })
 
       );
     }
@@ -352,7 +354,7 @@ const Result = () => {
             <p className="subheading">Hate Speech Meter</p>
             <Meter score={hs} />
             <h4>
-              <b>{"Score: " + hs + "/100 " + getHSLevel(hs)}</b>
+              <b>{"Avg Score: " + hs + "% " + getHSLevel(hs)}</b>
             </h4>
           </div>
 

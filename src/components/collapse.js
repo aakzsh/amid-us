@@ -46,93 +46,94 @@ const Collapse = (props) => {
   };
 
 
- const  onOpenCallback = () => {
+  const onOpenCallback = () => {
 
-let msg = "";
+    let msg = "";
 
-for (let index = 0; index < props.message.length; index++) {
-  msg+= props.message[index]["message"] + " ";
-  
-}
+    for (let index = 0; index < props.message.length; index++) {
+      msg += props.message[index]["message"] + " ";
 
-  getSentimentAnalysis(msg).then(value => {
-    console.log(value)
-    setSentiment(value.overall)
-  })
-
-  getHateSpeechAnalysis(msg).then((value) => {
-    console.log(value);
-    let hsTags = value.categories;
-    let score = 0;
-    for (let index = 0; index < hsTags.length; index++) {
-      score += hsTags[index].score;
     }
 
-    console.log(score, hsTags);
-    setHs(Math.round(score / hsTags.length/10));
-  });
+    getSentimentAnalysis(msg).then(value => {
+      console.log(value)
+      setSentiment(value.overall)
+    })
 
-  findActiveHours(props.message);
- }
-      
+    getHateSpeechAnalysis(msg).then((value) => {
+      console.log(value);
+      let hsTags = value.categories;
+      let score = 0;
+      for (let index = 0; index < hsTags.length; index++) {
+        score += hsTags[index].score;
+      }
+      const len = hsTags.length ? hsTags.length : 1;
+      score = score / props.messageCount / 10;
+      console.log(score, hsTags);
+      setHs(Math.round(score / len));
+    });
+
+    findActiveHours(props.message);
+  }
 
 
 
-const [activeHours, setHours] = useState("00:00 - 04:00");
-const [sentiment, setSentiment] = useState(0);
-const [hs, setHs] = useState(0)
 
-    return <div>
-        <Collapsible
-              trigger={[
-                <h4>
-                  <b>{props.name}</b>
-                </h4>,
-                <div className="rightcol">
-                  <img src={wpmicon} height="50rem" alt="" srcset="" />
-                  <h4>
-                    <b>{props.messageCount} Messages</b>
-                  </h4>
-                  <div style={{ width: "2rem" }}></div>
-                  <img src={chevron} alt="" style={{ height: "3rem" }} />
-                </div>,
-              ]}
+  const [activeHours, setHours] = useState("00:00 - 04:00");
+  const [sentiment, setSentiment] = useState(0);
+  const [hs, setHs] = useState(0)
 
-              onOpen = {()=>{onOpenCallback()}}
-            >
-              <div className="collapse-parent">
-                <div>
-                  <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
-                    <h6>
-                      <b>{activeHours}</b>
-                    </h6>
-                  </div>
-                 
-                </div>
+  return <div>
+    <Collapsible
+      trigger={[
+        <h4>
+          <b>{props.name}</b>
+        </h4>,
+        <div className="rightcol">
+          <img src={wpmicon} height="50rem" alt="" srcset="" />
+          <h4>
+            <b>{props.messageCount} Messages</b>
+          </h4>
+          <div style={{ width: "2rem" }}></div>
+          <img src={chevron} alt="" style={{ height: "3rem" }} />
+        </div>,
+      ]}
 
-                <div>
-                  <div className="collapse-item">
-                    <h5>Hate Speech Score</h5>
-                    <h6>
-                      <b>{hs}</b>
-                    </h6>
-                  </div>
-                  
-                </div>
+      onOpen={() => { onOpenCallback() }}
+    >
+      <div className="collapse-parent">
+        <div>
+          <div className="collapse-item">
+            <h5>Most Active Hours</h5>
+            <h6>
+              <b>{activeHours}</b>
+            </h6>
+          </div>
 
-                <div>
-                  <div className="collapse-item">
-                    <h5>Sentiment Score</h5>
-                    <h6>
-                      <b>{sentiment}</b>
-                    </h6>
-                  </div>
-                 
-                </div>
-              </div>
-            </Collapsible>
-    </div>
+        </div>
+
+        <div>
+          <div className="collapse-item">
+            <h5>Hate Speech Score</h5>
+            <h6>
+              <b>{hs} %</b>
+            </h6>
+          </div>
+
+        </div>
+
+        <div>
+          <div className="collapse-item">
+            <h5>Sentiment Score</h5>
+            <h6>
+              <b>{sentiment}</b>
+            </h6>
+          </div>
+
+        </div>
+      </div>
+    </Collapsible>
+  </div>
 }
 
 export default Collapse;
