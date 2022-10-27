@@ -13,14 +13,16 @@ import React, { useEffect, useState } from "react";
 import Meter from "../components/meter";
 import { Doughnut } from "react-chartjs-2/dist";
 import SentimentMeter from "../components/sentiment-meter";
-import Collapsible from "react-collapsible";
+
 import { pdfFromReact } from "generate-pdf-from-react-html";
 import {
   getKeyElements,
   getSentimentAnalysis,
   getHateSpeechAnalysis,
   getBehaviouralAnalysis,
+  getEmotionalAnalysis
 } from "../utils/api";
+import Collapse from "../components/collapse";
 
 const whatsapp = require("whatsapp-chat-parser");
 
@@ -28,26 +30,16 @@ const Result = () => {
   ChartJS.register(ArcElement, Tooltip, Legend);
 
   const tempcd = {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: ["Red", "blue", "green"],
     datasets: [
       {
         label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
+        data: [1,1,1],
         backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
+          "#5B6145","#889261","#4CC05F" 
         ],
         borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
+            "#5B6145","#889261","#4CC05F" 
         ],
         borderWidth: 1,
       },
@@ -83,6 +75,7 @@ const Result = () => {
   const [sentimentOverall, setSentimentOverall] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [chartData, setChartData] = useState(tempcd);
+  const [chart1Data, setChart1Data] = useState(tempcd);
 
   const findMostFrequent = (str) => {
     var num = 10;
@@ -203,7 +196,7 @@ const Result = () => {
       // };
 
       getBehaviouralAnalysis(rawText).then((value) => {
-        // console.log(value)
+        console.log(value)
         let tempLabels = [];
         let tempData = [];
 
@@ -233,9 +226,46 @@ const Result = () => {
             },
           ],
         }
-
+console.log(cd)
         setChartData(cd);
-      });
+      },
+
+      getEmotionalAnalysis(rawText).then((value) => {
+        console.log(value)
+        let tempLabels = [];
+        let tempData = [];
+
+        const data = value.categories;
+        for (let i = 0; i < data.length; i++) {
+          tempLabels.push(data[i].label);
+          tempData.push(data[i].score);
+        }
+
+        const cd = {
+          labels: tempLabels,
+          dataset: [
+            {
+              data: tempData,
+              label: "# of Votes",
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        }
+console.log(cd)
+        setChart1Data(cd);
+      }
+      
+      ));
     }
   }, [rawText]);
 
@@ -367,12 +397,12 @@ const Result = () => {
               )}
             </div>
 
-            <div className="sentiments">
+            {chartData==tempcd?<div></div>:<div className="sentiments">
               <div className="chart-parent">
                 <h3>
                   <b>Emotional Analysis</b>
                 </h3>
-                <Doughnut data={chartData} />
+                <Doughnut data={chart1Data} />
               </div>
               <div className="chart-parent">
                 <h3>
@@ -380,73 +410,14 @@ const Result = () => {
                 </h3>
                 <Doughnut data={chartData} />
               </div>
-            </div>
+            </div>}
           </div>
 
           <div className="indie">
             <p className="subheading">Individual Stats</p>
-            <Collapsible
-              trigger={[
-                <h4>
-                  <b>Aakash</b>
-                </h4>,
-                <div className="rightcol">
-                  <img src={wpmicon} height="50rem" alt="" srcset="" />
-                  <h4>
-                    <b>76 Messages</b>
-                  </h4>
-                  <div style={{ width: "2rem" }}></div>
-                  <img src={chevron} alt="" style={{ height: "3rem" }} />
-                </div>,
-              ]}
-            >
-              <div className="collapse-parent">
-                <div>
-                  <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
-                    <h6>
-                      <b>00:00 - 01:00</b>
-                    </h6>
-                  </div>
-                  <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
-                    <h6>
-                      <b>00:00 - 01:00</b>
-                    </h6>
-                  </div>
-                </div>
+            
+           <Collapse name="frooti" messageCount={800} activeHours={60}/>
 
-                <div>
-                  <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
-                    <h6>
-                      <b>00:00 - 01:00</b>
-                    </h6>
-                  </div>
-                  <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
-                    <h6>
-                      <b>00:00 - 01:00</b>
-                    </h6>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
-                    <h6>
-                      <b>00:00 - 01:00</b>
-                    </h6>
-                  </div>
-                  <div className="collapse-item">
-                    <h5>Most Active Hours</h5>
-                    <h6>
-                      <b>00:00 - 01:00</b>
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            </Collapsible>
           </div>
 
           <div

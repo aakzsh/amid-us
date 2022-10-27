@@ -110,3 +110,24 @@ export const getBehaviouralAnalysis = (text) => {
     }).catch(err => console.error(err));
 };
 
+export const getEmotionalAnalysis = (text) => {
+    return getToken().then(t => {
+        const payload = {
+            document: {
+                text: text
+            }
+        }
+        const headers = {
+            "accept": "application/json",
+            "Authorization": t,
+            "Content-Type": "application/json; charset=utf-8"
+        }
+        return axios.post(`${baseURL}/v2/categorize/emotional-traits/${language}`, payload, { headers: headers })
+            .then(r => {
+                const emotional = r.data.data;
+                return emotional;
+            })
+            .catch(er => console.error(er));
+    }).catch(err => console.error(err));
+};
+
