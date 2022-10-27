@@ -296,224 +296,199 @@ const Result = () => {
 
       //         console.log(finalCD)
 
-      const data = value.categories;
-      for (let i = 0; i < data.length; i++) {
-        tempLabels.push(data[i].label);
-        tempData.push(data[i].score);
-      }
 
-      const cd = {
-        labels: tempLabels,
-        dataset: [
-          {
-            data: tempData,
-            label: "# of Votes",
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-            ],
-            borderWidth: 1,
-          },
-        ],
-      }
-      console.log(cd)
-      setChart1Data(cd);
+      // // console.log(cd)
+      //         setChart1Data(finalCD);
+      //       },)
+
+      // );
     }
-
-        ));
-}
   }, [rawText]);
 
-useEffect(() => {
-  whatsapp.parseString(text).then((messages) => {
-    messages = messages.filter(function (obj) {
-      return obj.author !== "System" && obj.message != "<Media omitted>";
+  useEffect(() => {
+    whatsapp.parseString(text).then((messages) => {
+      messages = messages.filter(function (obj) {
+        return obj.author !== "System" && obj.message != "<Media omitted>";
+      });
+
+      setMessages(messages);
+
+      // console.log(messages);
+
+
+      (async () => {
+        await findMessageCount(messages);
+        await findWordCount(messages);
+      })();
+
+      // console.log(wordCount, messageCount);
+      //   findMostFrequent(rawText);
+      findHateSpeech();
+      findActiveHours(messages);
+      findTrends();
+      findSentiment();
+      setIsLoading(false);
     });
+  }, []);
 
-    setMessages(messages);
-
-    // console.log(messages);
-
-
-    (async () => {
-      await findMessageCount(messages);
-      await findWordCount(messages);
-    })();
-
-    // console.log(wordCount, messageCount);
-    //   findMostFrequent(rawText);
-    findHateSpeech();
-    findActiveHours(messages);
-    findTrends();
-    findSentiment();
-    setIsLoading(false);
-  });
-}, []);
-
-return (
-  <div>
-    {isLoading ? (
-      <div className="container g-padding-y-80--xs  g-fullheight--xs loading">
-        <div className="loader2"></div>
-        <h3>We're loading your stats</h3>
-      </div>
-    ) : (
-      <div className="container g-padding-y-120--xs fullpage">
-        <h1 className="g-font-weight--500 g-font-size-50--xs">
-          <b>Chat Analysis</b>
-        </h1>
-
-        <div className="wordcloud-parent">
-          <div className="cloud-cont">
-            <center>
-              {" "}
-              <TagCloud maxSize={45} minSize={15} tags={data} randomSeed={12} colorOptions={{ "hue": "green", "luminosity ": "bright" }} />
-            </center>{" "}
-          </div>
-          <p className="cloud-text subheading">Word Cloud</p>
+  return (
+    <div>
+      {isLoading ? (
+        <div className="container g-padding-y-80--xs  g-fullheight--xs loading">
+          <div className="loader2"></div>
+          <h3>We're loading your stats</h3>
         </div>
+      ) : (
+        <div className="container g-padding-y-120--xs fullpage">
+          <h1 className="g-font-weight--500 g-font-size-50--xs">
+            <b>Chat Analysis</b>
+          </h1>
 
-        <div className="message-summary">
-          <div className="summary-child">
-            <img src={chaticon} alt="" className="iconimage" />
-            <h2 className="count">{messageCount}</h2>
-            <h4 className="topic">Messages</h4>
+          <div className="wordcloud-parent">
+            <div className="cloud-cont">
+              <center>
+                {" "}
+                <TagCloud maxSize={45} minSize={15} tags={data} randomSeed={12} colorOptions={{ "hue": "green", "luminosity ": "bright" }} />
+              </center>{" "}
+            </div>
+            <p className="cloud-text subheading">Word Cloud</p>
           </div>
-          <div className="summary-child">
-            <img src={wordsicon} alt="" className="iconimage" />
-            <h2 className="count">{wordCount}</h2>
-            <h4 className="topic">Words</h4>
-          </div>
-          <div className="summary-child">
-            <img src={wpmicon} alt="" className="iconimage" />
-            <h2 className="count">{wpm}</h2>
-            <h4 className="topic">Words/Message</h4>
-          </div>
-        </div>
 
-        <div className="hatespeech">
-          <p className="subheading">Hate Speech Meter</p>
-          <Meter score={hs} />
-          <h4>
-            <b>{"Score: " + hs + "/100 " + getHSLevel(hs)}</b>
-          </h4>
-        </div>
-
-        <div className="most">
-          <div className="most-child">
-            <p className="subheading">Most Active Hours</p>
-            <div className="icon-content">
-              <img src={clock} alt="" className="most-child-icon" />
-              <h4>
-                <b>{hours}</b>
-              </h4>
+          <div className="message-summary">
+            <div className="summary-child">
+              <img src={chaticon} alt="" className="iconimage" />
+              <h2 className="count">{messageCount}</h2>
+              <h4 className="topic">Messages</h4>
+            </div>
+            <div className="summary-child">
+              <img src={wordsicon} alt="" className="iconimage" />
+              <h2 className="count">{wordCount}</h2>
+              <h4 className="topic">Words</h4>
+            </div>
+            <div className="summary-child">
+              <img src={wpmicon} alt="" className="iconimage" />
+              <h2 className="count">{wpm}</h2>
+              <h4 className="topic">Words/Message</h4>
             </div>
           </div>
-          <div className="most-child">
-            <p className="subheading">Most Talked Topics</p>
-            <div className="icon-content">
-              <img src={trends} alt="" className="most-child-icon" />
-              <div className="" style={{ padding: "0px" }}>
-                {topicsArr
-                  ? topicsArr.map((item) => {
-                    return (
-                      <>
-                        <h4 style={{ padding: "0px" }}>
-                          <b>{item}</b>
-                        </h4>
-                      </>
-                    );
-                  })
-                  : ""}
+
+          <div className="hatespeech">
+            <p className="subheading">Hate Speech Meter</p>
+            <Meter score={hs} />
+            <h4>
+              <b>{"Score: " + hs + "/100 " + getHSLevel(hs)}</b>
+            </h4>
+          </div>
+
+          <div className="most">
+            <div className="most-child">
+              <p className="subheading">Most Active Hours</p>
+              <div className="icon-content">
+                <img src={clock} alt="" className="most-child-icon" />
+                <h4>
+                  <b>{hours}</b>
+                </h4>
+              </div>
+            </div>
+            <div className="most-child">
+              <p className="subheading">Most Talked Topics</p>
+              <div className="icon-content">
+                <img src={trends} alt="" className="most-child-icon" />
+                <div className="" style={{ padding: "0px" }}>
+                  {topicsArr
+                    ? topicsArr.map((item) => {
+                      return (
+                        <>
+                          <h4 style={{ padding: "0px" }}>
+                            <b>{item}</b>
+                          </h4>
+                        </>
+                      );
+                    })
+                    : ""}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="sentiment">
-          <p className="subheading">Sentiment Analysis</p>
-          <SentimentMeter
-            score={sentimentOverall}
-            positive={sentimentPos}
-            negative={sentimentNeg}
-          />
+          <div className="sentiment">
+            <p className="subheading">Sentiment Analysis</p>
+            <SentimentMeter
+              score={sentimentOverall}
+              positive={sentimentPos}
+              negative={sentimentNeg}
+            />
 
-          <div className="sentiment-score">
-            <h3>
-              <b>Overall Sentiment Score:</b>
-            </h3>
-            {sentimentOverall > 0 ? (
-              <h1 style={{ color: "#3B951B" }}>
-                <b>{sentimentOverall}</b>
-              </h1>
-            ) : (
-              <h1 style={{ color: "#863333" }}>
-                <b>{sentimentOverall}</b>
-              </h1>
-            )}
+            <div className="sentiment-score">
+              <h3>
+                <b>Overall Sentiment Score:</b>
+              </h3>
+              {sentimentOverall > 0 ? (
+                <h1 style={{ color: "#3B951B" }}>
+                  <b>{sentimentOverall}</b>
+                </h1>
+              ) : (
+                <h1 style={{ color: "#863333" }}>
+                  <b>{sentimentOverall}</b>
+                </h1>
+              )}
+            </div>
+
+            {chartData == tempcd ? <div></div> : <div className="sentiments">
+              <div className="chart-parent">
+                <h3>
+                  <b>Emotional Analysis</b>
+                </h3>
+                <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
+                  data={chart1Data}
+                />;
+                {/* <Doughnut data={chart1Data} /> */}
+              </div>
+              <div className="chart-parent">
+                <h3>
+                  <b>Behavioral Analysis</b>
+                </h3>
+                <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
+                  data={chartData}
+                />;
+              </div>
+            </div>}
           </div>
 
-          {chartData == tempcd ? <div></div> : <div className="sentiments">
-            <div className="chart-parent">
-              <h3>
-                <b>Emotional Analysis</b>
-              </h3>
-              <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
-                data={chart1Data}
-              />;
-              {/* <Doughnut data={chart1Data} /> */}
-            </div>
-            <div className="chart-parent">
-              <h3>
-                <b>Behavioral Analysis</b>
-              </h3>
-              <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
-                data={chartData}
-              />;
-            </div>
-          </div>}
+          <div className="indie">
+            <p className="subheading">Individual Stats</p>
+
+            {topicsArr
+              ? uniqueAuthors.map((item) => {
+                const msg = messages.filter(function (obj) {
+                  return obj.author == item;
+                });
+                return (
+                  <>
+                    <Collapse name={item} messageCount={msg.length} activeHours={60} />
+                    <br />
+
+                  </>
+                );
+              })
+              : ""}
+
+
+
+          </div>
+
+          <div
+            className="download-report"
+            onClick={() => {
+              window.print();
+            }}
+          >
+            <img src={downloadicon} alt="" style={{ height: "2rem" }} />
+          </div>
         </div>
-
-        <div className="indie">
-          <p className="subheading">Individual Stats</p>
-
-          {topicsArr
-            ? uniqueAuthors.map((item) => {
-              const msg = messages.filter(function (obj) {
-                return obj.author == item;
-              });
-              return (
-                <>
-                  <Collapse name={item} messageCount={msg.length} activeHours={60} />
-                  <br />
-
-                </>
-              );
-            })
-            : ""}
-
-
-
-        </div>
-
-        <div
-          className="download-report"
-          onClick={() => {
-            window.print();
-          }}
-        >
-          <img src={downloadicon} alt="" style={{ height: "2rem" }} />
-        </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 };
 
 export default Result;
