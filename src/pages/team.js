@@ -4,8 +4,8 @@ import '../styles/team.css'
 
 const Team = () => {
     const navigate = useNavigate()
-    return (<div>
-
+    return (<div class="container g-padding-y-120--xs  g-fullheight--xs">
+        <h1 class="g-font-weight--700"><b>Our Team</b></h1>
         <div className="team">
             <div className="team-member" onClick={() => window.location.href = 'https://github.com/shrutigupta5555'}>
                 <img src="./img/shruti.png" alt="" className="pfp" />

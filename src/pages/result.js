@@ -35,12 +35,12 @@ const Result = () => {
     datasets: [
       {
         label: "# of Votes",
-        data: [1,1,1],
+        data: [1, 1, 1],
         backgroundColor: [
-          "#5B6145","#889261","#4CC05F" 
+          "#5B6145", "#889261", "#4CC05F"
         ],
         borderColor: [
-            "#5B6145","#889261","#4CC05F" 
+          "#5B6145", "#889261", "#4CC05F"
         ],
         borderWidth: 1,
       },
@@ -61,7 +61,7 @@ const Result = () => {
     }
   };
 
-  
+
 
   let text = localStorage.getItem("chat");
   const [messages, setMessages] = useState([]);
@@ -83,11 +83,12 @@ const Result = () => {
   const [chart1Data, setChart1Data] = useState([]);
 
   const findMostFrequent = (str) => {
-    var num = 10;
+    var num = 20;
+    const stopwords = ["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "will", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"];
     const strArr = str.toLowerCase().split(" ");
     const map = {};
     strArr.forEach((word) => {
-      if (word.length > 3) {
+      if (!stopwords.includes(word) && word.length > 2) {
         if (map.hasOwnProperty(word)) {
           map[word]++;
         } else {
@@ -99,7 +100,7 @@ const Result = () => {
     frequencyArr.sort((a, b) => b[1] - a[1]);
     var wordfreq = [];
 
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < num; index++) {
       wordfreq.push({
         value: frequencyArr[index][0],
         count: frequencyArr[index][1],
@@ -127,44 +128,44 @@ const Result = () => {
     setWordCount(count);
   };
 
-  const findHateSpeech = () => {};
+  const findHateSpeech = () => { };
   const findActiveHours = (msg) => {
-var hrs = {"00:00 - 04:00": 0,"04:00 - 08:00": 0,"08:00 - 12:00": 0,"12:00 - 16:00": 0,"16:00 - 20:00": 0,"20:00 - 24:00": 0, }
+    var hrs = { "00:00 - 04:00": 0, "04:00 - 08:00": 0, "08:00 - 12:00": 0, "12:00 - 16:00": 0, "16:00 - 20:00": 0, "20:00 - 24:00": 0, }
 
-   var messages = msg.filter(function (obj) {
-      return obj.date.getHours() >= 0 && obj.date.getHours() < 4 ;
+    var messages = msg.filter(function (obj) {
+      return obj.date.getHours() >= 0 && obj.date.getHours() < 4;
     });
     hrs["00:00 - 04:00"] = messages.length
     messages = msg.filter(function (obj) {
-      return obj.date.getHours() >= 4 && obj.date.getHours() < 8 ;
+      return obj.date.getHours() >= 4 && obj.date.getHours() < 8;
     });
     hrs["04:00 - 08:00"] = messages.length
 
     messages = msg.filter(function (obj) {
-      return obj.date.getHours() >= 8 && obj.date.getHours() < 12 ;
+      return obj.date.getHours() >= 8 && obj.date.getHours() < 12;
     });
     hrs["08:00 - 12:00"] = messages.length
 
     messages = msg.filter(function (obj) {
-      return obj.date.getHours() >= 12 && obj.date.getHours() < 16 ;
+      return obj.date.getHours() >= 12 && obj.date.getHours() < 16;
     });
     hrs["12:00 - 16:00"] = messages.length
 
     messages = msg.filter(function (obj) {
-      return obj.date.getHours() >= 16 && obj.date.getHours() < 20 ;
+      return obj.date.getHours() >= 16 && obj.date.getHours() < 20;
     });
     hrs["16:00 - 20:00"] = messages.length
 
     messages = msg.filter(function (obj) {
-      return obj.date.getHours() >= 20 && obj.date.getHours() < 24 ;
+      return obj.date.getHours() >= 20 && obj.date.getHours() < 24;
     });
     hrs["20:00 - 24:00"] = messages.length
     // console.log()
-setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
+    setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
     console.log(hrs)
   };
-  const findTrends = () => {};
-  const findSentiment = () => {};
+  const findTrends = () => { };
+  const findSentiment = () => { };
 
   useEffect(() => {
     // console.log(wordCount / messageCount);
@@ -246,59 +247,59 @@ setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
       //   ],
       // };
 
-//       getBehaviouralAnalysis(rawText).then((value) => {
-//         console.log(value)
-// var finalCD = [];
-//         let tempLabels = [];
-//         let tempData = [];
+      //       getBehaviouralAnalysis(rawText).then((value) => {
+      //         console.log(value)
+      // var finalCD = [];
+      //         let tempLabels = [];
+      //         let tempData = [];
 
-//         const data = value.categories;
-//         for (let i = 0; i < data.length; i++) {
-//   finalCD.push({"label": data[i].label,"value": data[i].score })
-//         }
+      //         const data = value.categories;
+      //         for (let i = 0; i < data.length; i++) {
+      //   finalCD.push({"label": data[i].label,"value": data[i].score })
+      //         }
 
-//         console.log(finalCD)
+      //         console.log(finalCD)
 
-//         const cd = {
-//           labels: tempLabels,
-//           dataset: [
-//             {
-//               data: tempData,
-//               label: "# of Votes",
-//               backgroundColor: [
-//                 "rgba(255, 99, 132, 0.2)",
-//                 "rgba(54, 162, 235, 0.2)",
-//                 "rgba(255, 206, 86, 0.2)",
-//               ],
-//               borderColor: [
-//                 "rgba(255, 99, 132, 1)",
-//                 "rgba(54, 162, 235, 1)",
-//                 "rgba(255, 206, 86, 1)",
-//               ],
-//               borderWidth: 1,
-//             },
-//           ],
-//         }
-// console.log(cd)
-//         setChartData(finalCD);
-//       },
+      //         const cd = {
+      //           labels: tempLabels,
+      //           dataset: [
+      //             {
+      //               data: tempData,
+      //               label: "# of Votes",
+      //               backgroundColor: [
+      //                 "rgba(255, 99, 132, 0.2)",
+      //                 "rgba(54, 162, 235, 0.2)",
+      //                 "rgba(255, 206, 86, 0.2)",
+      //               ],
+      //               borderColor: [
+      //                 "rgba(255, 99, 132, 1)",
+      //                 "rgba(54, 162, 235, 1)",
+      //                 "rgba(255, 206, 86, 1)",
+      //               ],
+      //               borderWidth: 1,
+      //             },
+      //           ],
+      //         }
+      // console.log(cd)
+      //         setChartData(finalCD);
+      //       },
 
 
-//       getEmotionalAnalysis(rawText).then((value) => {
-//         console.log(value)
-//         var finalCD = [];
+      //       getEmotionalAnalysis(rawText).then((value) => {
+      //         console.log(value)
+      //         var finalCD = [];
 
-//         const data = value.categories;
-//         for (let i = 0; i < data.length; i++) {
-//   finalCD.push({"label": data[i].label,"value": data[i].score })
-//         }
+      //         const data = value.categories;
+      //         for (let i = 0; i < data.length; i++) {
+      //   finalCD.push({"label": data[i].label,"value": data[i].score })
+      //         }
 
-//         console.log(finalCD)
+      //         console.log(finalCD)
 
-       
-// // console.log(cd)
-//         setChart1Data(finalCD);
-//       },)
+
+      // // console.log(cd)
+      //         setChart1Data(finalCD);
+      //       },)
 
       // );
     }
@@ -338,7 +339,7 @@ setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
           <h3>We're loading your stats</h3>
         </div>
       ) : (
-        <div className="container g-padding-y-80--xs fullpage">
+        <div className="container g-padding-y-120--xs fullpage">
           <h1 className="g-font-weight--500 g-font-size-50--xs">
             <b>Chat Analysis</b>
           </h1>
@@ -347,7 +348,7 @@ setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
             <div className="cloud-cont">
               <center>
                 {" "}
-                <TagCloud maxSize={35} minSize={20} tags={data} />
+                <TagCloud maxSize={45} minSize={15} tags={data} randomSeed={12} colorOptions={{ "hue": "green", "luminosity ": "bright" }} />
               </center>{" "}
             </div>
             <p className="cloud-text subheading">Word Cloud</p>
@@ -396,14 +397,14 @@ setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
                 <div className="" style={{ padding: "0px" }}>
                   {topicsArr
                     ? topicsArr.map((item) => {
-                        return (
-                          <>
-                            <h4 style={{ padding: "0px" }}>
-                              <b>{item}</b>
-                            </h4>
-                          </>
-                        );
-                      })
+                      return (
+                        <>
+                          <h4 style={{ padding: "0px" }}>
+                            <b>{item}</b>
+                          </h4>
+                        </>
+                      );
+                    })
                     : ""}
                 </div>
               </div>
@@ -433,23 +434,23 @@ setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
               )}
             </div>
 
-            {chartData==tempcd?<div></div>:<div className="sentiments">
+            {chartData == tempcd ? <div></div> : <div className="sentiments">
               <div className="chart-parent">
                 <h3>
                   <b>Emotional Analysis</b>
                 </h3>
-                <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={[ "#5B6145","#889261","#4CC05F" ]}
-  data={chart1Data}
-/>;
+                <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
+                  data={chart1Data}
+                />;
                 {/* <Doughnut data={chart1Data} /> */}
               </div>
               <div className="chart-parent">
                 <h3>
                   <b>Behavioral Analysis</b>
                 </h3>
-                <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={[ "#5B6145","#889261","#4CC05F" ]}
-  data={chartData}
-/>;
+                <DonutChart height={350} width={350} innerRadius={0.5} outerRadius={0.9} legend={false} colors={["#5B6145", "#889261", "#4CC05F"]}
+                  data={chartData}
+                />;
               </div>
             </div>}
           </div>
@@ -458,21 +459,21 @@ setHours(Object.keys(hrs).reduce((a, b) => hrs[a] > hrs[b] ? a : b))
             <p className="subheading">Individual Stats</p>
 
             {topicsArr
-                    ? uniqueAuthors.map((item) => {
-                      const msg = messages.filter(function (obj) {
-                        return obj.author == item;
-                      });
-                        return (
-                          <>
-                          <Collapse name={item} messageCount={msg.length} activeHours={60}/>
-                          <br />
-                            
-                          </>
-                        );
-                      })
-                    : ""}
-            
-           
+              ? uniqueAuthors.map((item) => {
+                const msg = messages.filter(function (obj) {
+                  return obj.author == item;
+                });
+                return (
+                  <>
+                    <Collapse name={item} messageCount={msg.length} activeHours={60} />
+                    <br />
+
+                  </>
+                );
+              })
+              : ""}
+
+
 
           </div>
 

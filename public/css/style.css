@@ -697,6 +697,9 @@ fieldset[disabled] .s-btn {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
+  .s-form-v5__input{
+    max-width: 100%;
+  }
 }
 /* Promo Block v3 */
 .s-promo-block-v3__divider {

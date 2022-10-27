@@ -26,3 +26,11 @@
     text-transform: capitalize;
     font-size: 14px;
 }
+
+
+@media (max-width: 61.9em) {
+    .home {
+        background-size: 80% !important;
+        background-position: 120% 105% !important;
+    }
+}

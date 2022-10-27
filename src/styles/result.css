@@ -10,7 +10,7 @@
 .cloud-cont{
     width: 40rem;
     min-height: 10rem;
-    background-color: #333431;
+    background-color: #424244;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +33,7 @@
 }
 
 .iconimage{
-    height: 200px;
+    height: 160px;
 }
 
 .message-summary{
